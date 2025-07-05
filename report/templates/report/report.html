@@ -5,233 +5,386 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Analysis Report</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f7f6;
-            color: #333;
-        }
 
+        /* General Body and Typography */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0; /* Remove default body margin */
+            padding: 20px; /* Add overall padding to content */
+            background-color: #f0f2f5; /* Lighter background for a modern feel */
+            color: #333;
+            line-height: 1.6;
+            display: flex; /* Use flexbox for the entire body */
+            flex-direction: column; /* Stack header and main content vertically */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            position: relative; /* Needed for absolute positioning of the button */
+        }
         h1 {
-            color: #2c3e50;
+            color: #1a4a7a; /* Deeper blue for main heading */
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2.5em; /* Larger main title */
+            font-weight: 700;
         }
-
-        .download-button-container {
+        h2 {
+            color: #2b6cb0; /* Slightly lighter blue for section headings */
             text-align: center;
             margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        h3 {
+            color: #2c5282; /* Even lighter blue for sub-headings */
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .go-live-button {
+            background-color: #28a745; /* green */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .go-live-button:hover {
+            background-color: #218838;
+        }
+
+        .button-fixed-top-right {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000; /* Make sure it's on top */
+        }
+        /* NEW: Download Button Container Styling */
+        .download-button-container {
+            position: absolute; /* Position relative to the nearest positioned ancestor (body in this case) */
+            top: 20px;          /* Distance from the top */
+            right: 20px;        /* Distance from the right */
+            z-index: 100;       /* Ensure it stays on top of other content */
         }
 
         .download-button {
             padding: 10px 20px;
-            background-color: #28a745;
+            font-size: 1rem;
+            background-color: #28a745; /* Green color for download */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Softer shadow */
         }
 
         .download-button:hover {
-            background-color: #218838;
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* More prominent shadow on hover */
         }
 
+        .download-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Main Layout Container */
         .main-content-wrapper {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            flex-direction: column; /* Stack filter/image section and data table vertically */
+            flex-grow: 1; /* Allow this wrapper to take available space */
+            max-width: 1600px; /* Increased further for even bigger layout */
+            margin: 0 auto; /* Center the main content */
+            width: 100%; /* Ensure it takes full width within max-width */
         }
 
+        /* Top Section: Filter and Image View Side-by-Side */
         .top-section-flex {
             display: flex;
-            flex-wrap: wrap; /* Allows wrapping on smaller screens */
-            gap: 20px;
-            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 20px; /* Space between filter and image containers */
+            margin-bottom: 20px; /* Space below this section */
         }
 
-        section {
+        /* Container Styling */
+        .filter-container,
+        .image-selection-container,
+        .data-section {
+            padding: 30px; /* Increased padding */
             background-color: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex: 1; /* Allows sections to grow and shrink */
-            min-width: 300px; /* Minimum width before wrapping */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); /* Softer, more prominent shadow */
+            box-sizing: border-box; /* Include padding in width */
         }
 
         .filter-container {
-            flex: 1;
-            max-width: 400px; /* Constrain width for filter */
+            flex: 0 0 350px; /* Base width for filter, can be adjusted */
+            min-width: 320px; /* Minimum width to prevent crushing */
         }
 
         .image-selection-container {
-            flex: 2; /* Image display area takes more space */
-            min-width: 500px; /* Ensure it's wide enough for images */
+            flex: 1; /* Allow image container to grow and take remaining space */
+            min-width: 800px; /* SIGNIFICANTLY INCREASED FOR BIGGER MAP */
         }
 
-        h2 {
-            color: #34495e;
-            margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        form .form-field {
-            margin-bottom: 15px;
-        }
-
+        /* Form Elements - Labels, Inputs, Selects */
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
+            margin-bottom: 8px;
+            font-weight: 600; /* Bolder labels */
+            color: #4a5568; /* Darker grey for labels */
+            text-align: left; /* Align labels to the left */
         }
 
-        input[type="date"],
-        select {
-            width: calc(100% - 22px); /* Adjust for padding/border */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box; /* Include padding/border in width */
+        .filter-container input[type="date"],
+        .filter-container select,
+        .time-select-group {
+            padding: 10px 15px; /* Slightly more padding */
+            font-size: 1rem;
+            border-radius: 8px; /* Slightly more rounded */
+            border: 1px solid #cbd5e0; /* Lighter, subtle border */
+            margin-bottom: 15px; /* More space below each field */
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            -webkit-appearance: none; /* Remove default browser styling for select */
+            -moz-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            width: 100%; /* Make inputs/selects take full width of their parent */
+        }
+        /* Style for the select arrow */
+        .filter-container select {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7l-116.8%20116.8L37.2%2075.1a17.6%2017.6%200%200%200-24.8%2024.8l129.2%20129.2c6.8%206.8%2017.9%206.8%2024.8%200l129.2-129.2c6.8-6.9%206.8-18-.1-24.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 12px;
         }
 
+        .filter-container input[type="date"]:focus,
+        .filter-container select:focus,
+        .time-select-group:focus {
+            border-color: #4299e1; /*    border on focus */
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Soft blue glow */
+            outline: none; /* Remove default outline */
+        }
+
+        .filter-container .form-row { /* Added a helper class for wrapping related form elements */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* Space between elements in a row */
+            justify-content: center; /* Center items in the form row */
+            margin-bottom: 15px; /* Space below the row */
+        }
+
+        .filter-container .form-field { /* Apply to individual field wrappers if needed */
+            flex-grow: 1; /* Allows fields to grow */
+            min-width: 150px; /* Minimum width before wrapping */
+            text-align: left; /* Ensure labels align left within their flex item */
+        }
+
+        /* Specific style for time select parts to appear side-by-side */
         .time-group-wrapper {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 5px; /* Space between hour, colon, and minute */
+            margin-bottom: 15px;
+            justify-content: center; /* Center the time group */
         }
-
         .time-select-group {
-            flex: 1;
+            flex-grow: 1; /* Allow hour/minute selects to grow */
+            max-width: 90px; /* Control max width of individual hour/minute selects */
+            margin-bottom: 0; /* Remove extra margin */
+        }
+        .time-group-wrapper span { /* Style for the colon separator */
+            font-size: 1.2em;
+            color: #4a5568;
+            font-weight: 600;
         }
 
-        button[type="submit"] {
-            display: block;
-            width: 100%;
-            padding: 10px;
+
+        /* Apply Button */
+        .filter-container button {
+            padding: 12px 25px; /* Larger padding for button */
+            font-size: 1.1rem; /* Slightly larger font */
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,123,255,0.2); /* Softer blue shadow */
+            margin-top: 20px; /* More space above button */
+            width: 100%; /* Make button take full width */
         }
-
-        button[type="submit"]:hover {
+        .filter-container button:hover {
             background-color: #0056b3;
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 15px rgba(0,123,255,0.3);
+        }
+        .filter-container button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,123,255,0.2);
         }
 
+        /* Image Display Area */
         .image-display-area {
             display: flex;
-            flex-direction: column; /* Stack image sets vertically */
-            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px; /* Increased gap between image sets */
+            margin-top: 25px;
         }
 
+        /* Each container for a specific timestamp's images */
         .image-item-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
+            display: none; /* Controlled by JS - default hide */
             text-align: center;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-            display: none; /* Hidden by default, controlled by JS */
+            border: 1px solid #e2e8f0; /* Lighter border */
+            padding: 20px; /* More padding */
+            border-radius: 10px;
+            background-color: #fdfefe; /* Very light background for image cards */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Subtle shadow */
+            flex: 1 1 45%; /* Allow it to take roughly half width */
+            max-width: 48%; /* Ensure it takes half width of its parent, with gap */
+            box-sizing: border-box;
+            transition: transform 0.2s ease; /* Smooth hover effect */
+        }
+        @media (min-width: 1200px) { /* Adjust for larger screens to potentially show more */
+            .image-item-container {
+                flex: 1 1 30%; /* Maybe 3 images per row */
+                max-width: 32%;
+            }
+        }
+        @media (max-width: 768px) {
+            .top-section-flex {
+                flex-direction: column; /* Stack filter and image sections vertically on small screens */
+            }
+            .filter-container,
+            .image-selection-container {
+                flex: 1 1 100%; /* Take full width on small screens */
+                max-width: none; /* Remove max-width constraint */
+            }
+            .image-item-container {
+                max-width: 95%; /* Wider on smaller screens */
+                flex: 1 1 95%;
+            }
+            .filter-container .form-row {
+                flex-direction: column; /* Stack fields vertically on small screens */
+                align-items: center;
+            }
+            .filter-container .form-field,
+            .filter-container select,
+            .filter-container input[type="date"] {
+                width: 90%; /* Occupy more width */
+                max-width: 300px; /* Limit overall width */
+            }
+            .time-group-wrapper {
+                width: 90%; /* Time group takes full width */
+                max-width: 300px;
+            }
+            .time-select-group {
+                width: 48%; /* Adjust width of hour/minute selects */
+                max-width: 140px; /* Limit max width */
+            }
+            /* Adjust button position for smaller screens */
+            .download-button-container {
+                top: 10px;
+                right: 10px;
+            }
+            .download-button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
         }
 
-        .image-item-container h3 {
-            color: #2980b9;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
+        /* Styles for individual image within a timestamp container */
         .individual-image-wrapper {
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #fff;
-            display: none; /* Hidden by default, controlled by JS */
+            display: none; /* Hidden by default, shown by JS */
+            margin-bottom: 15px; /* Space between images */
         }
-
         .individual-image-wrapper:last-child {
             margin-bottom: 0;
         }
 
-        .individual-image-wrapper img {
+        .image-item-container img {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            display: block; /* Ensures it takes full width of parent and no extra space below */
-            margin: 0 auto; /* Center image */
+            border-radius: 8px; /* Consistent border radius */
+            border: 1px solid #e0e0e0; /* Light border around image */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
         }
-
-        .individual-image-wrapper p {
-            margin-top: 10px;
+        .image-item-container p {
             font-size: 0.9em;
             color: #666;
-            font-style: italic;
+            margin-top: 0;
+            margin-bottom: 5px;
         }
 
-        .no-image-message, .no-data-message {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-            font-style: italic;
+        .no-image-message {
+            color: #e53e3e; /* Red for error messages */
+            font-weight: 600;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #ffebeb;
+            border-radius: 5px;
+            border: 1px solid #fbb4b4;
+            width: 100%; /* Take full width in display area */
+            box-sizing: border-box;
         }
 
+        /* Data Table Section - Removed scrollable properties */
         .data-section {
-            margin-top: 20px;
-            overflow-x: auto; /* For table responsiveness */
+            /* overflow-y: auto; */ /* Removed to show all data */
+            /* max-height: 400px; */ /* Removed to show all data */
+            margin-bottom: 20px; /* Space below the table */
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            border-collapse: separate; /* Use separate for rounded corners */
+            border-spacing: 0;
+            margin-top: 25px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden; /* Ensures rounded corners on content */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px 15px; /* More padding in cells */
             text-align: left;
+            border-bottom: 1px solid #edf2f7; /* Lighter horizontal line */
         }
-
         th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            color: #333;
+            background-color: #eef2f7; /* Very light blue header */
+            color: #4a5568;
+            font-weight: 700; /* Bolder headers */
+            text-transform: uppercase; /* Uppercase headers */
+            font-size: 0.9em;
+            letter-spacing: 0.05em;
+            /* Sticky headers are optional now that table doesn't scroll independently */
+            /* position: sticky; */
+            /* top: 0; */
+            /* z-index: 1; */
         }
-
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        tr:last-child td {
+            border-bottom: none; /* No border on the last row */
         }
-
-        tbody tr:hover {
-            background-color: #f1f1f1;
+        tr:nth-child(even) {
+            background-color: #f8fbfd; /* Very light stripe effect */
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .top-section-flex {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .filter-container,
-            .image-selection-container {
-                max-width: 100%;
-                min-width: unset;
-                width: 100%;
-            }
+        tr:hover {
+            background-color: #e0e6f0; /* Soft highlight on hover */
+            cursor: pointer;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Weather Analysis Report</h1>
@@ -240,7 +393,11 @@
         <button id="downloadReportBtn" class="download-button">
             Download Report
         </button>
+            <!-- <div class="button-container"> -->
+    <button class="go-live-button" id="goToLiveBtn">Go to Live</button>
+            <!-- </div> -->
     </div>
+
 
     <div class="main-content-wrapper">
         <div class="top-section-flex">
@@ -296,7 +453,7 @@
                         >
                             <option value="">-- Select a View --</option>
                             <option value="cropped_tn" {% if selected_image_view == 'cropped_tn' %}selected{% endif %}>Cropped Tamil Nadu (Radar Only)</option>
-                            <option value="masked_district" {% if selected_image_view == 'masked_district' %}selected{% endif %}>Shape-Masked District</option>
+                            <option value="masked_district" {% if selected_image_view == 'masked_district' %}selected{% endif %}>Shape-Masked District (Generated)</option>
                             <option value="tn_overlay" {% if selected_image_view == 'tn_overlay' %}selected{% endif %}>Overall TN Map with District Outlines</option>
                             <option value="combined_full_tn" {% if selected_image_view == 'combined_full_tn' %}selected{% endif %}>Combined Full TN View (Map + Outlines)</option>
                         </select>
@@ -331,7 +488,7 @@
                                 <div class="individual-image-wrapper masked_district_view">
                                     {% if image_set.masked_district %}
                                         <img src="{{ image_set.masked_district }}" alt="Shape-Masked District Image at {{ image_set.timestamp|date:'H:i' }}">
-                                        <p>Shape-Masked {{ selected_district }} (Radar Data)</p>
+                                        <p>Shape-Masked {{ selected_district }}</p>
                                     {% else %}
                                         <p class="no-image-message">Shape-masked image for {{ selected_district }} N/A.</p>
                                     {% endif %}
@@ -341,7 +498,7 @@
                                 <div class="individual-image-wrapper tn_overlay_view">
                                     {% if image_set.aligned_overlay_tn %}
                                         <img src="{{ image_set.aligned_overlay_tn }}" alt="Tamil Nadu with Shape Overlay at {{ image_set.timestamp|date:'H:i' }}">
-                                        <p>Overall TN Map with District Outlines (Radar + Map)</p>
+                                        <p>Overall TN Map with District Outlines</p>
                                     {% else %}
                                         <p class="no-image-message">TN map overlay N/A.</p>
                                     {% endif %}
@@ -355,14 +512,14 @@
             </section>
         </div>
 
-        {# Cloud Analysis data table #}
-        <section class="data-section" id="cloudAnalysisSection">
-            <h2>Cloud Analysis Data</h2>
+        {# Weather Analysis data table #}
+        <section class="data-section" id="cloudSection">
+            <h2>Weather Analysis Data</h2>
             {% if cloud_analysis_data %}
             <table>
                 <thead>
                     <tr>
-                        <th>City</th>
+                        <th>Districts</th>
                         <th>Values</th>
                         <th>Type</th>
                         <th>Timestamp</th>
@@ -386,9 +543,12 @@
     </div>
 
     <script>
+            document.getElementById('goToLiveBtn').addEventListener('click', function() {
+        window.location.href = '/live/';
+    });
         document.addEventListener('DOMContentLoaded', function() {
             const imageDisplaySection = document.getElementById('imageDisplaySection');
-            const cloudAnalysisSection = document.getElementById('cloudAnalysisSection');
+            const cloudSection = document.getElementById('cloudSection');
             const imageSelector = document.getElementById('imageSelector');
             const dateFilter = document.getElementById('dateFilter');
 
@@ -414,7 +574,7 @@
                 let initialHour = '00';
                 let initialMinute = '00';
 
-                // Prioritize Django context value if available (e.g., after form submission)
+                // Prioritize Django context value`` if available (e.g., after form submission)
                 if (initialTimeStr && initialTimeStr.includes(':')) {
                     [initialHour, initialMinute] = initialTimeStr.split(':');
                 } else {
@@ -561,14 +721,10 @@
                 showSelectedImageView();
                 // Ensure the sections are visible if filters result in data
                 imageDisplaySection.style.display = 'block';
-                cloudAnalysisSection.style.display = 'block';
+                cloudSection.style.display = 'block';
             } else {
                 // If no image view is selected, initially hide all image items
                 allTimestampImageContainers.forEach(container => container.style.display = 'none');
-                // The sections themselves should also be hidden if no images are shown,
-                // or if no filters are applied yet.
-                // This might be better handled by default `display: none` in CSS
-                // and then show if `generated_images_for_display` is not empty.
             }
 
             // NEW: Download button functionality
