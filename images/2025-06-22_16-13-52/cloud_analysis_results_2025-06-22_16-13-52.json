@@ -1,0 +1,194 @@
+[
+    {
+        "city": "Ariyalur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Chennai",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Coimbatore",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Cuddalore",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Dharmapuri",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Dindigul",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Erode",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Kancheepuram",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Kanniyakumari",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Karur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Krishnagiri",
+        "values": "1.5 mm - Blue, 10 mm - Yellow Green, 2 mm - Cyan, 3 mm - Aqua Green, 7 mm - Lime",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Madurai",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Nagappattinam",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Namakkal",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Perambalur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Pudukkottai",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Ramanathapuram",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Salem",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Sivaganga",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Thanjavur",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "TheNilgiris",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Theni",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Thiruvallur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Thiruvarur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Thoothukkudi",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Tiruchirappalli",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Tirunelveli",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Tiruppur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Tiruvannamalai",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Vellore",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Viluppuram",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    },
+    {
+        "city": "Virudunagar",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-22 16:13:52"
+    }
+]

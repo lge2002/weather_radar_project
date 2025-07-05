@@ -1,0 +1,194 @@
+[
+    {
+        "city": "Ariyalur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Chennai",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Coimbatore",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Cuddalore",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Dharmapuri",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Dindigul",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Erode",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Kancheepuram",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Kanniyakumari",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Karur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Krishnagiri",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green, 7 mm - Lime",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Madurai",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Nagappattinam",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Namakkal",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Perambalur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Pudukkottai",
+        "values": "1.5 mm - Blue, 2 mm - Cyan, 3 mm - Aqua Green",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Ramanathapuram",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Salem",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Sivaganga",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Thanjavur",
+        "values": "1.5 mm - Blue, 2 mm - Cyan",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "TheNilgiris",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Theni",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Thiruvallur",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Thiruvarur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Thoothukkudi",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Tiruchirappalli",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Tirunelveli",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Tiruppur",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Tiruvannamalai",
+        "values": "1.5 mm - Blue",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Vellore",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Viluppuram",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    },
+    {
+        "city": "Virudunagar",
+        "values": "No significant cloud levels found for precipitation",
+        "type": "Weather radar",
+        "timestamp": "2025-06-20 18:18:57"
+    }
+]

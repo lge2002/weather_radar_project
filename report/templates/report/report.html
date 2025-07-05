@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .download-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .download-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #218838;
+        }
+
+        .main-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .top-section-flex {
+            display: flex;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+            gap: 20px;
+            justify-content: center;
+        }
+
+        section {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Allows sections to grow and shrink */
+            min-width: 300px; /* Minimum width before wrapping */
+        }
+
+        .filter-container {
+            flex: 1;
+            max-width: 400px; /* Constrain width for filter */
+        }
+
+        .image-selection-container {
+            flex: 2; /* Image display area takes more space */
+            min-width: 500px; /* Ensure it's wide enough for images */
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        form .form-field {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="date"],
+        select {
+            width: calc(100% - 22px); /* Adjust for padding/border */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box; /* Include padding/border in width */
+        }
+
+        .time-group-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .time-select-group {
+            flex: 1;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .image-display-area {
+            display: flex;
+            flex-direction: column; /* Stack image sets vertically */
+            gap: 30px;
+        }
+
+        .image-item-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-align: center;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            display: none; /* Hidden by default, controlled by JS */
+        }
+
+        .image-item-container h3 {
+            color: #2980b9;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .individual-image-wrapper {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+            display: none; /* Hidden by default, controlled by JS */
+        }
+
+        .individual-image-wrapper:last-child {
+            margin-bottom: 0;
+        }
+
+        .individual-image-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            display: block; /* Ensures it takes full width of parent and no extra space below */
+            margin: 0 auto; /* Center image */
+        }
+
+        .individual-image-wrapper p {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .no-image-message, .no-data-message {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-style: italic;
+        }
+
+        .data-section {
+            margin-top: 20px;
+            overflow-x: auto; /* For table responsiveness */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .top-section-flex {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-container,
+            .image-selection-container {
+                max-width: 100%;
+                min-width: unset;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Analysis Report</h1>
+
+    <div class="download-button-container">
+        <button id="downloadReportBtn" class="download-button">
+            Download Report
+        </button>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div class="top-section-flex">
+            <section class="filter-container">
+                <h2>Filter by Date and District</h2>
+                <form method="GET" action="" id="filterForm">
+                    <div class="form-field">
+                        <label for="dateFilter">Date:</label>
+                        <input
+                            type="date"
+                            id="dateFilter"
+                            name="date"
+                            value="{{ selected_date|default:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="districtFilter" class="mt-4">District:</label>
+                        <select
+                            id="districtFilter"
+                            name="district"
+                        >
+                            <option value="">-- Select a District --</option>
+                            <option value="All Districts" {% if selected_district == 'All Districts' %}selected{% endif %}>All Districts</option>
+                            {% for district in available_districts %}
+                                <option value="{{ district }}" {% if selected_district == district %}selected{% endif %}>{{ district }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="mt-4">From Time:</label>
+                        <div class="time-group-wrapper">
+                            <select id="startTimeHour" name="start_time_hour" class="time-select-group"></select>
+                            <span>:</span>
+                            <select id="startTimeMinute" name="start_time_minute" class="time-select-group"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="mt-4">To Time:</label>
+                        <div class="time-group-wrapper">
+                            <select id="endTimeHour" name="end_time_hour" class="time-select-group"></select>
+                            <span>:</span>
+                            <select id="endTimeMinute" name="end_time_minute" class="time-select-group"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="imageSelector" class="mt-4">Select Image View:</label>
+                        <select id="imageSelector"
+                                name="image_view_type"
+                        >
+                            <option value="">-- Select a View --</option>
+                            <option value="cropped_tn" {% if selected_image_view == 'cropped_tn' %}selected{% endif %}>Cropped Tamil Nadu (Radar Only)</option>
+                            <option value="masked_district" {% if selected_image_view == 'masked_district' %}selected{% endif %}>Shape-Masked District</option>
+                            <option value="tn_overlay" {% if selected_image_view == 'tn_overlay' %}selected{% endif %}>Overall TN Map with District Outlines</option>
+                            <option value="combined_full_tn" {% if selected_image_view == 'combined_full_tn' %}selected{% endif %}>Combined Full TN View (Map + Outlines)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">
+                        Apply Filter
+                    </button>
+                </form>
+            </section>
+
+            <section class="image-selection-container" id="imageDisplaySection">
+                <h2>Image View for Selected Time Range</h2>
+                <div class="image-display-area">
+                    {% if generated_images_for_display %}
+                        {% for image_set in generated_images_for_display %}
+                            {# Each image-item-container holds images for a specific timestamp #}
+                            <div class="image-item-container" data-timestamp="{{ image_set.timestamp|date:'YmdHis' }}">
+                                <h3>{{ image_set.timestamp|date:'H:i' }} (on {{ image_set.timestamp|date:'Y-m-d' }})</h3>
+
+                                {# Cropped Tamil Nadu Image #}
+                                <div class="individual-image-wrapper cropped_tn_view">
+                                    {% if image_set.cropped_tn %}
+                                        <img src="{{ image_set.cropped_tn }}" alt="Cropped Tamil Nadu Image at {{ image_set.timestamp|date:'H:i' }}">
+                                        <p>Cropped Tamil Nadu (Radar Only)</p>
+                                    {% else %}
+                                        <p class="no-image-message">Cropped TN image N/A.</p>
+                                    {% endif %}
+                                </div>
+
+                                {# Shape-Masked District Image #}
+                                <div class="individual-image-wrapper masked_district_view">
+                                    {% if image_set.masked_district %}
+                                        <img src="{{ image_set.masked_district }}" alt="Shape-Masked District Image at {{ image_set.timestamp|date:'H:i' }}">
+                                        <p>Shape-Masked {{ selected_district }} (Radar Data)</p>
+                                    {% else %}
+                                        <p class="no-image-message">Shape-masked image for {{ selected_district }} N/A.</p>
+                                    {% endif %}
+                                </div>
+
+                                {# Overall TN Map with District Outlines #}
+                                <div class="individual-image-wrapper tn_overlay_view">
+                                    {% if image_set.aligned_overlay_tn %}
+                                        <img src="{{ image_set.aligned_overlay_tn }}" alt="Tamil Nadu with Shape Overlay at {{ image_set.timestamp|date:'H:i' }}">
+                                        <p>Overall TN Map with District Outlines (Radar + Map)</p>
+                                    {% else %}
+                                        <p class="no-image-message">TN map overlay N/A.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-image-message">No images found for the selected date and time range. Please adjust filters.</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+        {# Cloud Analysis data table #}
+        <section class="data-section" id="cloudAnalysisSection">
+            <h2>Cloud Analysis Data</h2>
+            {% if cloud_analysis_data %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Values</th>
+                        <th>Type</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in cloud_analysis_data %}
+                    <tr>
+                        <td>{{ data.city }}</td>
+                        <td>{{ data.values }}</td>
+                        <td>{{ data.type }}</td>
+                        <td>{{ data.timestamp|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-image-message">No Cloud Analysis data available for the selected date {% if selected_district != 'All Districts' %} and district "{{ selected_district }}"{% endif %}.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageDisplaySection = document.getElementById('imageDisplaySection');
+            const cloudAnalysisSection = document.getElementById('cloudAnalysisSection');
+            const imageSelector = document.getElementById('imageSelector');
+            const dateFilter = document.getElementById('dateFilter');
+
+            // Select all timestamp-specific image containers
+            const allTimestampImageContainers = document.querySelectorAll('.image-item-container');
+
+            // Helper function to format date to YYYY-MM-DD
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            // Function to populate hour and minute dropdowns
+            function populateTimeDropdowns(hourSelectId, minuteSelectId, initialTimeStr) {
+                const hourSelect = document.getElementById(hourSelectId);
+                const minuteSelect = document.getElementById(minuteSelectId);
+
+                hourSelect.innerHTML = '';
+                minuteSelect.innerHTML = '';
+
+                let initialHour = '00';
+                let initialMinute = '00';
+
+                // Prioritize Django context value if available (e.g., after form submission)
+                if (initialTimeStr && initialTimeStr.includes(':')) {
+                    [initialHour, initialMinute] = initialTimeStr.split(':');
+                } else {
+                    // If initialTimeStr is not provided or invalid, try URL parameters (for subsequent loads from URL)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const paramHour = urlParams.get(hourSelect.name);
+                    const paramMinute = urlParams.get(minuteSelect.name);
+
+                    if (paramHour) initialHour = paramHour;
+                    if (paramMinute) initialMinute = paramMinute;
+                }
+
+                // Populate hours (00 to 23)
+                for (let h = 0; h < 24; h++) {
+                    const hourValue = String(h).padStart(2, '0');
+                    const option = document.createElement('option');
+                    option.value = hourValue;
+                    option.textContent = hourValue;
+                    if (hourValue === initialHour) {
+                        option.selected = true;
+                    }
+                    hourSelect.appendChild(option);
+                }
+
+                // Populate minutes (00, 15, 30, 45)
+                for (let m = 0; m < 60; m += 15) {
+                    const minuteValue = String(m).padStart(2, '0');
+                    const option = document.createElement('option');
+                    option.value = minuteValue;
+                    option.textContent = minuteValue;
+                    if (minuteValue === initialMinute) {
+                        option.selected = true;
+                    }
+                    minuteSelect.appendChild(option);
+                }
+            }
+
+            // --- Set Default Date and Time on Page Load ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedDateFromUrl = urlParams.get('date');
+
+            // Set Date: Only set if not already present from URL parameters or Django context
+            if (!dateFilter.value && !selectedDateFromUrl) {
+                const today = new Date();
+                dateFilter.value = formatDate(today);
+            }
+
+            // Set Times: Only set if not already present from URL parameters or Django context
+            const selectedStartTimeFromDjango = "{{ selected_start_time|default:'' }}";
+            const selectedEndTimeFromDjango = "{{ selected_end_time|default:'' }}";
+
+            // If no initial time values are from Django context, calculate defaults
+            if (!selectedStartTimeFromDjango && !urlParams.get('start_time_hour')) {
+                const now = new Date();
+                let currentMinute = now.getMinutes();
+                let currentHour = now.getHours();
+
+                // Round up minutes to the nearest 15 for FROM TIME
+                let fromMinute = Math.ceil(currentMinute / 15) * 15;
+                let fromHour = currentHour;
+
+                if (fromMinute === 60) {
+                    fromMinute = 0;
+                    fromHour = (fromHour + 1) % 24;
+                }
+
+                const defaultStartTime = `${String(fromHour).padStart(2, '0')}:${String(fromMinute).padStart(2, '0')}`;
+                populateTimeDropdowns('startTimeHour', 'startTimeMinute', defaultStartTime);
+
+                // Calculate TO TIME as 15 minutes after FROM TIME
+                let toMinute = fromMinute + 15;
+                let toHour = fromHour;
+
+                if (toMinute === 60) {
+                    toMinute = 0;
+                    toHour = (toHour + 1) % 24;
+                }
+
+                const defaultEndTime = `${String(toHour).padStart(2, '0')}:${String(toMinute).padStart(2, '0')}`;
+                populateTimeDropdowns('endTimeHour', 'endTimeMinute', defaultEndTime);
+
+            } else {
+                // If Django context or URL params exist, use those to populate
+                populateTimeDropdowns('startTimeHour', 'startTimeMinute', selectedStartTimeFromDjango);
+                populateTimeDropdowns('endTimeHour', 'endTimeMinute', selectedEndTimeFromDjango);
+            }
+
+            // --- Image Display Logic for Multiple Images ---
+            function showSelectedImageView() {
+                const viewType = imageSelector.value;
+
+                // Hide all individual image wrappers within all timestamp containers initially
+                document.querySelectorAll('.individual-image-wrapper').forEach(imgWrapper => {
+                    imgWrapper.style.display = 'none';
+                });
+
+                // Hide all timestamp containers initially
+                allTimestampImageContainers.forEach(container => {
+                    container.style.display = 'none';
+                });
+
+                // Iterate through each timestamp container and show/hide images based on selected view type
+                allTimestampImageContainers.forEach(tsContainer => {
+                    let hasVisibleImage = false; // Flag to track if any image is visible in this timestamp container
+
+                    if (viewType === 'cropped_tn') {
+                        const img = tsContainer.querySelector('.cropped_tn_view');
+                        if (img) {
+                            img.style.display = 'block';
+                            hasVisibleImage = true;
+                        }
+                    } else if (viewType === 'masked_district') {
+                        const img = tsContainer.querySelector('.masked_district_view');
+                        if (img) {
+                            img.style.display = 'block';
+                            hasVisibleImage = true;
+                        }
+                    } else if (viewType === 'tn_overlay') {
+                        const img = tsContainer.querySelector('.tn_overlay_view');
+                        if (img) {
+                            img.style.display = 'block';
+                            hasVisibleImage = true;
+                        }
+                    } else if (viewType === 'combined_full_tn') {
+                        const croppedImg = tsContainer.querySelector('.cropped_tn_view');
+                        const overlayImg = tsContainer.querySelector('.tn_overlay_view');
+                        if (croppedImg) { croppedImg.style.display = 'block'; hasVisibleImage = true; }
+                        if (overlayImg) { overlayImg.style.display = 'block'; hasVisibleImage = true; }
+                    }
+
+                    // Only show the entire timestamp container if it contains a visible image
+                    if (hasVisibleImage) {
+                        tsContainer.style.display = 'block';
+                    }
+                });
+            }
+
+            // Listen for changes on the image selector dropdown
+            imageSelector.addEventListener('change', showSelectedImageView);
+
+            // Initial display call based on selected_image_view from Django context or URL
+            const initialImageView = imageSelector.value;
+            if (initialImageView) {
+                showSelectedImageView();
+                // Ensure the sections are visible if filters result in data
+                imageDisplaySection.style.display = 'block';
+                cloudAnalysisSection.style.display = 'block';
+            } else {
+                // If no image view is selected, initially hide all image items
+                allTimestampImageContainers.forEach(container => container.style.display = 'none');
+                // The sections themselves should also be hidden if no images are shown,
+                // or if no filters are applied yet.
+                // This might be better handled by default `display: none` in CSS
+                // and then show if `generated_images_for_display` is not empty.
+            }
+
+            // NEW: Download button functionality
+            const downloadReportBtn = document.getElementById('downloadReportBtn');
+            const filterForm = document.getElementById('filterForm'); // Get a reference to your form
+
+            downloadReportBtn.addEventListener('click', function() {
+                // Get the current filter parameters from the form
+                const formData = new FormData(filterForm);
+                const queryParams = new URLSearchParams(formData).toString();
+                const downloadUrl = `/download-report/?${queryParams}`;
+                window.location.href = downloadUrl;
+            });
+        });
+    </script>
+</body>
+</html>
