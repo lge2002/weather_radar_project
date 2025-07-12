@@ -24,7 +24,7 @@ import base64
 import shutil
 warnings.filterwarnings("ignore")
 
-SHAPEFILE_PATH = os.path.join(settings.BASE_DIR, 'weather', 'management', 'commands', 'gadm41_IND_2.json')
+SHAPEFILE_PATH = os.path.join(settings.BASE_DIR, 'weather', 'management', 'commands', 'TAMIL NADU_DISTRICTS.geojson')
 FINAL_MIN_LON = 74.80
 FINAL_MAX_LON = 80.37
 FINAL_MIN_LAT = 7.98
@@ -63,7 +63,7 @@ def _generate_image_data_for_timestamp(
         if selected_district == 'All Districts' or gdf_tn.empty:
             output_images['masked_district'] = img_pil.copy() # Use a copy to avoid unintended modifications
         else:
-            district_rows_for_name = gdf_tn[gdf_tn['NAME_2'].str.lower() == selected_district.lower()]
+            district_rows_for_name = gdf_tn[gdf_tn['dtname'].str.lower() == selected_district.lower()]
             if not district_rows_for_name.empty:
                 all_district_geometries = district_rows_for_name.geometry.to_list()
                 district_polygon_for_mask = unary_union(all_district_geometries)
@@ -91,7 +91,7 @@ def _generate_image_data_for_timestamp(
         ax.imshow(img_np, extent=[FINAL_MIN_LON, FINAL_MAX_LON, FINAL_MIN_LAT, FINAL_MAX_LAT])
         gdf_tn.boundary.plot(ax=ax, edgecolor='black', linewidth=0.5)
         if selected_district != 'All Districts':
-            district_rows_for_name_for_highlight = gdf_tn[gdf_tn['NAME_2'].str.lower() == selected_district.lower()]
+            district_rows_for_name_for_highlight = gdf_tn[gdf_tn['dtname'].str.lower() == selected_district.lower()]
             if not district_rows_for_name_for_highlight.empty:
                 district_rows_for_name_for_highlight.boundary.plot(ax=ax, edgecolor='cyan', linewidth=2, linestyle='--', label=selected_district)
                 ax.set_title(f"Aligned Screenshot with {selected_district} Highlighted ({timestamp_dt.strftime('%H:%M')})")
@@ -219,8 +219,8 @@ def report_view(request):
             raise FileNotFoundError(f"Shapefile not found at {SHAPEFILE_PATH}.")
         gdf = gpd.read_file(SHAPEFILE_PATH)
         gdf_tn = gdf[
-            (gdf['NAME_1'].str.strip().str.lower() == 'tamilnadu') |
-            (gdf['NAME_1'].str.strip().str.lower() == 'tamil nadu')
+            (gdf['stname'].str.strip().str.lower() == 'tamilnadu') |
+            (gdf['stname'].str.strip().str.lower() == 'tamil nadu')
         ].to_crs("EPSG:4326")
     except FileNotFoundError as fnfe:
         print(f"CRITICAL ERROR: Shapefile (for generation) not found: {fnfe}")
@@ -314,15 +314,15 @@ def report_view(request):
         else:
             temp_gdf = gpd.read_file(SHAPEFILE_PATH)
             gdf_tn_districts_for_list = temp_gdf[
-                (temp_gdf['NAME_1'].str.strip().str.lower() == 'tamilnadu') |
-                (temp_gdf['NAME_1'].str.strip().str.lower() == 'tamil nadu')
+                (temp_gdf['stname'].str.strip().str.lower() == 'tamilnadu') |
+                (temp_gdf['stname'].str.strip().str.lower() == 'tamil nadu')
             ]
 
-            if 'NAME_2' in gdf_tn_districts_for_list.columns:
-                unique_districts = gdf_tn_districts_for_list['NAME_2'].dropna().unique().tolist()
+            if 'dtname' in gdf_tn_districts_for_list.columns:
+                unique_districts = gdf_tn_districts_for_list['dtname'].dropna().unique().tolist()
                 full_available_districts = sorted(unique_districts)
             else:
-                print("Warning: 'NAME_2' column not found in shapefile for district extraction. Falling back to default list.")
+                print("Warning: 'dtname' column not found in shapefile for district extraction. Falling back to default list.")
                 full_available_districts = ['Coimbatore', 'Chennai', 'Madurai', 'Trichy', 'Salem', 'Ariyalur']
 
     except Exception as e:
@@ -440,8 +440,8 @@ def download_report_pdf(request):
             raise FileNotFoundError(f"Shapefile not found at {SHAPEFILE_PATH}.")
         gdf = gpd.read_file(SHAPEFILE_PATH)
         gdf_tn = gdf[
-            (gdf['NAME_1'].str.strip().str.lower() == 'tamilnadu') |
-            (gdf['NAME_1'].str.strip().str.lower() == 'tamil nadu')
+            (gdf['stname'].str.strip().str.lower() == 'tamilnadu') |
+            (gdf['stname'].str.strip().str.lower() == 'tamil nadu')
         ].to_crs("EPSG:4326")
     except FileNotFoundError as fnfe:
         print(f"PDF Gen: CRITICAL ERROR: Shapefile not found: {fnfe}")
