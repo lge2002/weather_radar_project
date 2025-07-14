@@ -37,7 +37,7 @@
     },
     {
         "city": "Dindigul",
-        "values": "1.5 mm - Light",
+        "values": "No significant cloud levels found for precipitation",
         "type": "Weather radar",
         "timestamp": "2025-07-12 10:15:00"
     },
@@ -61,7 +61,7 @@
     },
     {
         "city": "Karur",
-        "values": "No significant cloud levels found for precipitation",
+        "values": "1.5 mm - Light",
         "type": "Weather radar",
         "timestamp": "2025-07-12 10:15:00"
     },

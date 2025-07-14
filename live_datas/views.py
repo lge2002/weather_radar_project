@@ -1,40 +1,70 @@
 # live_datas/views.py
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse # Import JsonResponse
-from weather.models import CloudAnalysis
-from django.db.models import Max # Import Max for aggregation
-import pytz 
+from django.http import HttpResponse, JsonResponse
+from weather.models import CloudAnalysis # Changed from Cloud to CloudAnalysis
+from django.db.models import Max
+import pytz
+from django.utils import timezone # Import timezone for working with datetimes
 
 def data(request):
+    """
+    Django view to retrieve and display the most recent cloud analysis data
+    from the 'CloudAnalysis' model.
 
+    This view is specifically designed to show data only from the single,
+    absolute latest "update loop" or "batch" that exists in the database.
+
+    It works as follows:
+    1. Identifies if the request is an AJAX call (for JSON response) or a
+       standard browser request (for HTML rendering).
+    2. Queries the database to find the highest (latest) timestamp across
+       *all* records in the CloudAnalysis model. This timestamp represents the
+       time of the most recent data update.
+    3. If a latest timestamp is found, it then filters the CloudAnalysis records
+       to include only those entries that exactly match this absolute
+       latest timestamp. This ensures that only data belonging to the
+       most recent "loop" of updates is retrieved.
+    4. Orders the retrieved data by city name for consistent display.
+    5. Based on the request type (AJAX or standard), it either:
+       - Returns the filtered data as a JSON object (for dynamic updates).
+       - Renders an HTML template ('live_datas/live.html') with the data
+         passed in the context (for initial page load).
+    """
+    # Determine if the request is an AJAX call (e.g., from JavaScript's XMLHttpRequest)
+    # or if the client specifically requested JSON format via a GET parameter.
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('format') == 'json'
-    latest_timestamps = CloudAnalysis.objects.values('city').annotate(
-        latest_timestamp=Max('timestamp')
-    ).order_by('city') # Order by city for consistent display order
 
-    # 2. Filter the original queryset to get only the entries matching these latest timestamps
-    #    This creates a list of actual CloudAnalysis objects
+    # Step 1: Find the single, absolute latest timestamp across ALL records in the CloudAnalysis table.
+    # This is done by aggregating the maximum 'timestamp' value from the entire model.
+    # The result will be a dictionary, e.g., {'timestamp__max': datetime.datetime(...)}.
+    absolute_latest_timestamp_obj = CloudAnalysis.objects.aggregate(Max('timestamp')) # Using CloudAnalysis model
+    absolute_latest_timestamp = absolute_latest_timestamp_obj['timestamp__max']
+
+    # Initialize an empty list to hold the cloud data. This list will be populated
+    # only if an absolute latest timestamp is found, ensuring graceful handling
+    # when the database table is empty.
     latest_cloud_data = []
-    for entry in latest_timestamps:
-        # Get the specific CloudAnalysis object that has this city and its latest timestamp
-        # .first() is used in case multiple entries have the exact same timestamp (though unlikely for "latest")
-        record = CloudAnalysis.objects.filter(
-            city=entry['city'],
-            timestamp=entry['latest_timestamp']
-        ).first()
-        if record:
-            latest_cloud_data.append(record)
 
-    # Sort the final list by timestamp (newest first) for display
-    # This ensures the table is ordered consistently for the user
-    latest_cloud_data.sort(key=lambda x: x.timestamp, reverse=True)
+    # Step 2: If an absolute latest timestamp was found (meaning the database is not empty),
+    # proceed to filter the records.
+    if absolute_latest_timestamp:
+        # Filter the CloudAnalysis records to include only those whose 'timestamp'
+        # exactly matches the 'absolute_latest_timestamp' found in the previous step.
+        # This effectively selects all records that were part of the most recent data update.
+        # The results are then ordered by 'city' for consistent presentation.
+        latest_cloud_data = CloudAnalysis.objects.filter( # Using CloudAnalysis model
+            timestamp=absolute_latest_timestamp
+        ).order_by('city')
 
-
+    # Step 3: Handle the request based on whether it's an AJAX call or a standard browser request.
     if is_ajax:
-        # If it's an AJAX request, return data as JSON
+        # For AJAX requests, prepare the data as a list of dictionaries for JSON serialization.
         data_for_json = []
         for record in latest_cloud_data:
-            # Convert datetime objects to string for JSON serialization
+            # Convert the datetime object to a string for JSON compatibility.
+            # Using strftime provides a consistent format. If timezone conversion
+            # to a specific local timezone is needed for the client,
+            # timezone.localtime(record.timestamp) could be used before strftime.
             timestamp_str = record.timestamp.strftime('%Y-%m-%d %H:%M:%S')
             data_for_json.append({
                 'city': record.city,
@@ -42,10 +72,13 @@ def data(request):
                 'type': record.type,
                 'timestamp': timestamp_str,
             })
+        # Return the data as a JSON response.
         return JsonResponse({'cloud_analysis_data': data_for_json})
     else:
-        # If it's a regular browser request, render the HTML page
+        # For standard browser requests, prepare the context dictionary to pass data
+        # to the HTML template.
         context = {
-            'cloud_analysis_data': latest_cloud_data # Pass the fetched latest data
+            'cloud_analysis_data': latest_cloud_data # The filtered latest data
         }
+        # Render the 'live_datas/live.html' template, passing the context data to it.
         return render(request, 'live_datas/live.html', context)

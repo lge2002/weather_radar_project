@@ -30,6 +30,16 @@ import pytz
 
 
 class Command(BaseCommand):
+    
+    PASSES = {
+    'Palakkad': ['Coimbatore', 'Karur', 'Tiruchirappalli', 'Tiruppur'],
+    'Aralvaimozhi': ['Kanyakumari', 'Tirunelveli', ],
+    'Sengottai': ['Ramanathapuram','Tenkasi','Thoothukudi'],
+    'Cumbum': ['Theni'],
+    }
+
+    
+    
     help = 'Automates screenshot capture from Windy.com, crops to ALL Tamil Nadu districts, masks with shapefile, and analyzes cloud levels.'
 
     BLUE_DOT_XPATH = '//*[@id="leaflet-map"]/div[1]/div[4]/div[2]'
@@ -317,6 +327,20 @@ class Command(BaseCommand):
 
                 for district_name in all_tn_districts:
                     self.stdout.write(f"\nProcessing district: {district_name} for initial analysis and DB save...")
+                    
+                    
+                    # Find which pass this district belongs to (case-insensitive, strip spaces)
+                    normalized_district = district_name.strip().lower()
+                    pass_name = None
+                    for p_name, districts in self.PASSES.items():
+                        for d in districts:
+                            if normalized_district == d.strip().lower():
+                                pass_name = p_name
+                                break
+                        if pass_name:
+                            break
+                    # if pass_name is None:
+                    #     pass_name = "No Pass"  # Default value for districts not in any pass
 
                     district_masked_folder = os.path.join(base_folder, "masked_cropped", district_name.replace(" ", "_"))
                     os.makedirs(district_masked_folder, exist_ok=True)
@@ -377,10 +401,11 @@ class Command(BaseCommand):
                     try:
                         CloudAnalysis.objects.update_or_create(
                             city=district_name,
-                            timestamp=timestamp_for_db, # This is now a timezone-aware datetime object
+                            timestamp=timestamp_for_db,  # This is now a timezone-aware datetime object
                             defaults={
                                 "values": color_text,
-                                "type": "Weather radar"
+                                "type": "Weather radar",
+                                "pass_field": pass_name  # Save the pass name in the pass_field column
                             }
                         )
                         self.stdout.write(self.style.SUCCESS(f"Cloud analysis for {district_name} saved to database."))
@@ -391,10 +416,11 @@ class Command(BaseCommand):
                         "city": district_name,
                         "values": color_text,
                         "type": "Weather radar",
-                        "timestamp": timestamp_for_db.strftime('%Y-%m-%d %H:%M:%S') # Use the localized timestamp for JSON
+                        "timestamp": timestamp_for_db.strftime('%Y-%m-%d %H:%M:%S'),  # Use the localized timestamp for JSON
+                        "pass": pass_name
                     }
                     current_run_results.append(district_data_for_post_collection)
-            
+
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f"Error during initial image processing or shapefile handling for all districts: {e}"))
                 self.stdout.write("Waiting 5 minutes before retry...\n")
