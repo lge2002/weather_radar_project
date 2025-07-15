@@ -71,6 +71,7 @@ def data(request):
                 'values': record.values,
                 'type': record.type,
                 'timestamp': timestamp_str,
+                'pass_field': record.pass_field
             })
         # Return the data as a JSON response.
         return JsonResponse({'cloud_analysis_data': data_for_json})

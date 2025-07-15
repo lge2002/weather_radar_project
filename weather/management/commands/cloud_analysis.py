@@ -339,8 +339,6 @@ class Command(BaseCommand):
                                 break
                         if pass_name:
                             break
-                    # if pass_name is None:
-                    #     pass_name = "No Pass"  # Default value for districts not in any pass
 
                     district_masked_folder = os.path.join(base_folder, "masked_cropped", district_name.replace(" ", "_"))
                     os.makedirs(district_masked_folder, exist_ok=True)

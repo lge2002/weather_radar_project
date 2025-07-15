@@ -5,7 +5,7 @@ class CloudAnalysis(models.Model):
     values = models.TextField(max_length=100) 
     type = models.CharField(max_length=50, default="Weather radar")
     timestamp = models.DateTimeField(db_index=True) 
-    pass_field = models.CharField(max_length=100, null=True, blank=True, db_column='pass')  # Correct: db_column matches your DB
+    pass_field = models.CharField(max_length=100, null=True, blank=True)  # Correct: db_column matches your DB
 
 
     class Meta:

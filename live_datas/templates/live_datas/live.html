@@ -102,6 +102,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider bg-indigo-600">Values</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider bg-indigo-600">Type</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider bg-indigo-600 rounded-tr-lg">Timestamp</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider bg-indigo-600 rounded-tr-lg">Pass</th>
                     </tr>
                 </thead>
                 <tbody id="live-data-table-body" class="divide-y divide-gray-200">
@@ -113,6 +114,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ data.values }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ data.type }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ data.timestamp|date:"Y-m-d H:i:s" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ data.pass_field|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -153,6 +155,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${item.values}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${item.type}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${item.timestamp}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${item.pass_field ?? ''}</td>
                             `;
                             tableBody.appendChild(row);
                         });

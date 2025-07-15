@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
@@ -302,7 +303,7 @@ def report_view(request):
     EXCLUDE_NO_PRECIP_MESSAGE = "No significant cloud levels found for precipitation"
     cloud_analysis_query = cloud_analysis_query.exclude(values__iexact=EXCLUDE_NO_PRECIP_MESSAGE) # Exclude no precipitation data
 
-    filtered_cloud_analysis_data = list(cloud_analysis_query.order_by('city', 'timestamp'))
+    filtered_cloud_analysis_data = list(cloud_analysis_query.order_by('city', 'timestamp').values("timestamp","city",'values','type','pass_field'))
     print(f"Fetched {len(filtered_cloud_analysis_data)} weather data points for {target_date_display_str} and {selected_district}.")
 
     # --- Dynamically load available districts for the dropdown filter ---
@@ -518,7 +519,7 @@ def download_report_pdf(request):
     cloud_analysis_query_pdf = cloud_analysis_query_pdf.exclude(values__iexact=EXCLUDE_NO_PRECIP_MESSAGE)
 
     filtered_cloud_analysis_data_for_pdf = list(cloud_analysis_query_pdf.order_by('city', 'timestamp'))
-    print(f"PDF Gen: Fetched {len(filtered_cloud_analysis_data_for_pdf)} weather data points for PDF.")
+    print(f"PDF Gen: Fetched {len(filtered_cloud_analysis_data_for_pdf)} weather data points for PDF.")           
 
     # --- Prepare context for the PDF HTML template ---
     context_for_pdf = {

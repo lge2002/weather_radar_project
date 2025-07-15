@@ -523,6 +523,7 @@
                         <th>Values</th>
                         <th>Type</th>
                         <th>Timestamp</th>
+                        <th>Pass</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -532,6 +533,7 @@
                         <td>{{ data.values }}</td>
                         <td>{{ data.type }}</td>
                         <td>{{ data.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td>{{ data.pass_field|default:"" }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
