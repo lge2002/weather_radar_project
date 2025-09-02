@@ -10,21 +10,18 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from PIL import Image
-from datetime import datetime, timedelta, date  # ✅ FIXED: Removed `time`
-import time  # ✅ FIXED: Proper `time` module imported
+from datetime import datetime, timedelta, date 
+import time  
 import os
 import json
 from django.template.loader import render_to_string
-
 from xhtml2pdf import pisa
-
 import geopandas as gpd
 import numpy as np
 import rasterio
 from rasterio.features import rasterize
 from rasterio.transform import from_bounds
 from shapely.ops import unary_union
-
 import requests
 import pytz
 
@@ -94,13 +91,6 @@ class Command(BaseCommand):
         processed_results_data_for_pdf = []
         for item in results_data:
             new_item = item.copy()
-            # Assuming you collect image paths in `item` if you want to display them
-            # You might need to add logic here to fetch or generate the *display* paths
-            # for the automation report if they are not already in `results_data`.
-            # For this specific `_generate_and_save_automation_pdf` function,
-            # it uses the results_data (cloud analysis JSON) and the full/cropped screenshots.
-            # If you want to show per-district images, you need to pass those paths here.
-            # For now, I'll assume the main template might want the full/cropped path.
             processed_results_data_for_pdf.append(new_item)
 
 
@@ -445,13 +435,6 @@ class Command(BaseCommand):
                 # Get absolute paths for the screenshots for the PDF report
                 full_screenshot_path_abs = os.path.abspath(full_screenshot_path)
                 cropped_screenshot_path_abs = os.path.abspath(cropped_screenshot_path)
-
-                # Collect paths for per-district masked images if you want them in automation_report_pdf.html
-                # This assumes a structure to store them in a list of dicts similar to generated_images_for_display
-                # in your main report.
-                # For this specific automation report, you might just want the full and cropped.
-                # If you want all masked_cropped_path, you need to collect them in a list during the loop.
-                # For now, I'll pass only the main full and cropped images as your context suggests.
 
                 self._generate_and_save_automation_pdf(
                     current_run_results,
